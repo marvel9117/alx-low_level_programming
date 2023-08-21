@@ -1,0 +1,1 @@
+Readme forpointers array string
