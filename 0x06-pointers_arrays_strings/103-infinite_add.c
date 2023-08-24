@@ -1,49 +1,46 @@
-#include "main.h" 
+#include "main.h"
 
 /**
  * infinite_add - adds two numbers
  * @n1: first number
  * @n2: second number
- * @r: result
- * @size_r: result buffer size
- * Return: 0 if result cant be stored in r
+ * @r: buffer for result
+ * @size_r: buffer size
+ * Return: address of r or 0
  */
-
 char *infinite_add(char *n1, char *n2, char *r, int size_r)
 {
-	int len1, len2, hold, remain, tmp, i, j;
+	int i, j, k, l, m, n;
 
-	for (len1 = 0; n1[len1]; len1++)
-		;
-	for (len2 = 0; n2[len2]; len2++)
-		;
+	for (i = 0; n1[i]; i++);
 
-	if (len1 > size_r || len2 > size_r)
+	for (j = 0; n2[j]; j++);
+
+	if (i > size_r || j > size_r)
 		return (0);
-	remain = 0;
-	for (len1 = (len1 - 1), len2 = (len2 - 1), i = 0;
-			i < (size_r - 1); len1--, len2--, i++)
+	m = 0;
+	for (i -= 1, j -= 1, k = 0; k < size_r - 1; i--, j--, k++)
 	{
-		hold = remain;
-		if (len1 >= 0)
-			hold = hold + n1[len1] - '0';
-		if (len2 >= 0)
-			hold = hold + n2[len2] - '0';
-		if (len1 < 0 && len2 < 0 && hold == 0)
+		n = m;
+		if ( i >= 0)
+			n += n1[i] - '0';
+		if (j >= 0)
+			n += n2[j] - '0';
+		if (i < 0 && J < 0 && n == 0)
+		{
 			break;
-		remain = hold / 10;
-		r[i] = (hold % 10) + '0';
+		}
+		m = n / 10;
+		r[k] = n % 10 + '0';
 	}
-	r[i] = '\0';
-
-	if (len1 >= 0 || len2 >= 0 || remain)
+	r[k] = '\0';
+	if (i >= 0 || j >= 0 || m)
 		return (0);
-	for (i = (i - 1), j = 0; j < i; i--, j++)
+	for (k -= 1, l = 0; l < k; k--, l++)
 	{
-		tmp = r[i];
-		r[i] = r[j];
-		r[j] = tmp;
+		m = r[k];
+		r[k] = r[l];
+		r[l] = m;
 	}
-
 	return (r);
 }
