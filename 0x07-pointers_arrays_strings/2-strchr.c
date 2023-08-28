@@ -1,19 +1,31 @@
 #include "main.h"
 
 /**
- * _strlen - returns the length of a string
- * @s: string length to be returned
- * Return: the length of the string
- */
-int _strlen(char *s)
+ * _strchr - Locates a character in a string
+ * @s: String
+ * @c: Character to search
+ * Return: Pointer to the first occurrence of the character c in the string s
+ **/
+
+char *_strchr(char *s, char c)
 {
-	int a;
 
-	a = 0;
-
-	while (s[a] != '\0')
+	while (*s != '\0') /*Declaring WHILE*/
 	{
-		a++;
+		if (*s == c) /*if s ==  c*/
+		{
+			return (s); /*return s*/
+		}
+
+		++s;
 	}
-	return (a);
+
+	if (*s == c)
+	{
+		return (s);
+
+	}
+
+
+	return (0);/* values null*/
 }
