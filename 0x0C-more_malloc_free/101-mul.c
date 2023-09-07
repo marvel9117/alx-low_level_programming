@@ -1,74 +1,134 @@
+#include "main.h"
 #include <stdlib.h>
 #include <stdio.h>
 
 /**
- * _atoi -> Convert string to integer
+ * _memset - fills memory with a constant byte
  *
- * @s: Input
+ * @s: input pointer that represents memory block
+ *     to fill
+ * @b: characters to fill/set
+ * @n: number of bytes to be filled
  *
- * Return: Integer Converted
+ * Return: pointer to the filled memory area
  */
 
-int _atoi(char *s)
+char *_memset(char *s, char b, unsigned int n)
 {
-	int i;
-	int sin;
-	unsigned int digit;
+	unsigned int i = 0;
 
-	i = 0;
-	sin = 1;
-	digit = 0;
-	while (s[i] != '\0')
+	while (i < n)
 	{
-		if (s[i] == '-')
-			sin *= -1;
-		else if (s[i] >= '0' && s[i] <= '9')
-		{
-			digit = (digit * 10) + (s[i] - '0');
-		}
-		else if (digit > 0)
-			break;
+		s[i] = b;
 		i++;
 	}
-	return (digit * sin);
+	return (s);
 }
 
 /**
- * main -> Entry
+ * _calloc - function that allocates memory
+ *           for an array using memset
  *
- * @ac: Number Args
- * @av: Array String 2D
+ * @nmemb: size of array
+ * @size: size of each element
  *
- * Return: Depend Condition
+ * Return: pointer to new allocated memory
  */
 
-int main(int ac, char **av)
+void *_calloc(unsigned int nmemb, unsigned int size)
 {
-	int i;
-	int j;
-	unsigned int mul;
-	int num1;
-	int num2;
+	char *ptr;
 
-	if (ac != 3)
+	if (nmemb == 0 || size == 0)
+		return (NULL);
+	ptr = malloc(nmemb * size);
+	if (ptr == NULL)
+		return (NULL);
+	_memset(ptr, 0, nmemb * size);
+
+	return (ptr);
+}
+
+
+/**
+ * multiply - initialize array with 0 byte
+ *
+ * @s1: string 1
+ * @s2: string 2
+ *
+ * Return: nothing
+ */
+
+void multiply(char *s1, char *s2)
+{
+	int i, l1, l2, total_l, f_digit, s_digit, res = 0, tmp;
+	char *ptr;
+	void *temp;
+
+	l1 = _length(s1);
+	l2 = _length(s2);
+	tmp = l2;
+	total_l = l1 + l2;
+	ptr = _calloc(sizeof(int), total_l);
+
+	/* store our pointer address to free later */
+	temp = ptr;
+
+	for (l1--; l1 >= 0; l1--)
 	{
-		printf("Error\n");
-		exit(98);
-	}
-	for (i = 1; i < ac; i++)
-	{
-		for (j = 0; av[i][j] != '\0'; j++)
+		f_digit = s1[l1] - '0';
+		res = 0;
+		l2 = tmp;
+		for (l2--; l2 >= 0; l2--)
 		{
-			if (av[i][j] < '0' || av[i][j] > '9')
-			{
-				printf("Error\n");
-				exit(98);
-			}
+			s_digit = s2[l2] - '0';
+			res += ptr[l2 + l1 + 1] + (f_digit * s_digit);
+			ptr[l1 + l2 + 1] = res % 10;
+			res /= 10;
 		}
+		if (res)
+			ptr[l1 + l2 + 1] = res % 10;
 	}
-	num1 = _atoi(av[1]);
-	num2 = _atoi(av[2]);
-	mul = num1 * num2;
-	printf("%u\n", mul);
+
+	while (*ptr == 0)
+	{
+		ptr++;
+		total_l--;
+	}
+
+	for (i = 0; i < total_l; i++)
+		printf("%i", ptr[i]);
+	printf("\n");
+	free(temp);
+}
+
+
+/**
+ * main - Entry point
+ *
+ * Description: a program that multiplies
+ *            two positive numbers
+ *
+ * @argc: number of arguments
+ * @argv: arguments array
+ *
+ * Return: 0 on success 98 on faliure
+ */
+
+int main(int argc, char *argv[])
+{
+	char *n1 = argv[1];
+	char *n2 = argv[2];
+
+	if (argc != 3 || check_number(n1) || check_number(n2))
+		error_exit();
+
+	if (*n1 == '0' || *n2 == '0')
+	{
+		_putchar('0');
+		_putchar('\n');
+	}
+	else
+		multiply(n1, n2);
 	return (0);
 }
