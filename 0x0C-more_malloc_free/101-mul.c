@@ -1,115 +1,74 @@
-#include<string.h>
-#include "main.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 /**
- * _isdigit - checks if character is digit
- * @c: the character to check
+ * _atoi -> Convert string to integer
  *
- * Return: 1 if digit, 0 otherwise
+ * @s: Input
+ *
+ * Return: Integer Converted
  */
 
-int _isdigit(int c)
+int _atoi(char *s)
 {
-	return (c >= '0' && c <= '9');
-}
+	int i;
+	int sin;
+	unsigned int digit;
 
-/**
- * _strlen - returns the length of a string
- * @s: the string whose length to check
- *
- * Return: integer length of string
- */
-
-int _strlen(char *s)
-{
-	int i = 0;
-
-	while (*s++)
+	i = 0;
+	sin = 1;
+	digit = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i] == '-')
+			sin *= -1;
+		else if (s[i] >= '0' && s[i] <= '9')
+		{
+			digit = (digit * 10) + (s[i] - '0');
+		}
+		else if (digit > 0)
+			break;
 		i++;
-	return (i);
+	}
+	return (digit * sin);
 }
 
 /**
- * big_multiply - multiply two big number strings
- * @s1: the first big number string
- * @s2: the second big number string
+ * main -> Entry
  *
- * Return: the product big number string
+ * @ac: Number Args
+ * @av: Array String 2D
+ *
+ * Return: Depend Condition
  */
-char *big_multiply(char *s1, char *s2)
+
+int main(int ac, char **av)
 {
-	char *r;
-	int l1, l2, a, b, c, x;
+	int i;
+	int j;
+	unsigned int mul;
+	int num1;
+	int num2;
 
-	l1 = _strlen(s1);
-	l2 = _strlen(s2);
-	r = malloc(a = x = l1 + l2);
-	if (!r)
-		printf("Error\n"), exit(98);
-	while (a--)
-		r[a] = 0;
-
-	for (l1--; l1 >= 0; l1--)
+	if (ac != 3)
 	{
-		if (!_isdigit(s1[l1]))
+		printf("Error\n");
+		exit(98);
+	}
+	for (i = 1; i < ac; i++)
+	{
+		for (j = 0; av[i][j] != '\0'; j++)
 		{
-			free(r);
-			printf("Error\n"), exit(98);
-		}
-
-		a = s1[l1] - '0';
-		c = 0;
-
-		for (l2 = _strlen(s2) - 1; l2 >= 0; l2--)
-		{
-			if (!_isdigit(s2[l2]))
+			if (av[i][j] < '0' || av[i][j] > '9')
 			{
-				free(r);
-				printf("Error\n"), exit(98);
+				printf("Error\n");
+				exit(98);
 			}
-			b = s2[l2] - '0';
-
-			c += r[l1 + l2 + 1] + (a * b);
-			r[l1 + l2 + 1] = c % 10;
-
-			c /= 10;
 		}
-		if (c)
-			r[l1 + l2 + 1] += c;
 	}
-	return (r);
-}
-
-/**
- * main - multiply two big number strings
- * @argc: the number of arguments
- * @argv: the argument vector
- *
- * Return: Always 0 on success.
- */
-int main(int argc, char **argv)
-{
-	char *r;
-	int a, c, x;
-
-	if (argc != 3)
-		printf("Error\n"), exit(98);
-
-	x = _strlen(argv[1]) + _strlen(argv[2]);
-	r = big_multiply(argv[1], argv[2]);
-	c = 0;
-	a = 0;
-	while (c < x)
-	{
-		if (r[c])
-			a = 1;
-		if (a)
-			_putchar(r[c] + '0');
-		c++;
-	}
-	if (!a)
-		_putchar('0');
-	_putchar('\n');
-	free(r);
+	num1 = _atoi(av[1]);
+	num2 = _atoi(av[2]);
+	mul = num1 * num2;
+	printf("%u\n", mul);
 	return (0);
 }
