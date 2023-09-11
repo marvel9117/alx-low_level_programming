@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #ifndef DOG
 #define DOG
 
@@ -28,3 +29,6 @@ dog_t *new_dog(char *name, float age, char *owner);
 void free_dog(dog_t *d);
 
 #endif
+=======
+
+>>>>>>> c6689edc0450b15d8ad113b05bfdb6098742d9bf
